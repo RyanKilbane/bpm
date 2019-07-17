@@ -17,4 +17,4 @@ class Metadata:
     
     def get_table_data(self):
         inspect = reflection.Inspector.from_engine(self.engine)
-        inspect.get_columns(self.table_name, self.schema)
+        inspect.get_columns(self.table, self.schema)
