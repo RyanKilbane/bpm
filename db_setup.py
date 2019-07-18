@@ -17,7 +17,7 @@ class Setup:
     
     def create_ingest_table(self):
         ingest_table = "CREATE TABLE {} (\
-                        reference varchar(11) unique,\
+                        reference varchar(11) PRIMARY KEY,\
                         period varchar(6), \
                         survey varchar(4), \
                         bpm_id varchar(50) unique \
