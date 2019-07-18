@@ -4,6 +4,9 @@ from db_interface.construct_class import ClassBuild
 from db_interface.insert_data import InsertData
 from exceptions.insert_error import InsertError
 from uuid import uuid4
+import requests
+from parse_config import config
+import json
 
 class DataOperations:
     def __init__(self, table_metadata, data, table_name, stage, db_name):
@@ -14,7 +17,6 @@ class DataOperations:
         self.db = db_name
         
     def check(self, *ignore):
-        print(*ignore)
         column_names = [column["name"] for column in self.table_metadata]
         for attribute in self.data.keys():
             if attribute not in column_names and attribute not in ignore:
@@ -30,7 +32,8 @@ class DataOperations:
     def persist(self):
         Base = declarative_base()
         orm = ClassBuild(self.table_name, self.data, self.table_metadata, Base).build_class()
-        return InsertData(self.db, self.table_name, self.data, orm).insert()
+        return InsertData(self.db, self.table_name, self.data, orm, config["test"]).insert()
 
-    def post_to_next_stage(data_to_post):
-        pass
+    def post_to_next_stage(self, api):
+        print("data to post: {}".format(self.data))
+        requests.post(url=api, data=json.dumps(self.data), headers={"content-type": "application/json"})

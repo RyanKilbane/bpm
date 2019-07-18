@@ -16,3 +16,9 @@ tracking:
   target: validation_outputs
   ignore:
     - validation_outputs
+
+allocations:
+  table_name: allocations
+  api: /allocate
+  stage: Allocation
+  database_name: bpm_test

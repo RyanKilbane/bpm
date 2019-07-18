@@ -30,8 +30,10 @@ def tracking():
         operations.persist()
     except InsertError as insert_error:
         return str(insert_error) + "\n"
+    
+    operations.post_to_next_stage("http://127.0.0.1:5000/allocate")
 
-    return "Data persisted\n"
+    return ('OK', 200)
 
 def check_for_no_failures(data):
     if len(data[config["tracking"]["target"]]) == 0:

@@ -1,5 +1,4 @@
 from flask import Blueprint, request
-import json
 from uuid import uuid4
 from sqlalchemy.ext.declarative import declarative_base
 from db_interface.get_metadata import Metadata
@@ -8,7 +7,6 @@ from db_interface.construct_class import ClassBuild
 from exceptions.data_error import DataError
 from exceptions.insert_error import InsertError
 from data_operations import DataOperations
-import time
 from parse_config import config
 
 ingest_point = Blueprint('ingest_point', __name__)

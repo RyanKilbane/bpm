@@ -4,8 +4,8 @@ from sqlalchemy import exc
 from exceptions.insert_error import InsertError
 
 class InsertData:
-    def __init__(self, database, table, data, orm_class):
-        engine = Metadata(test_env=True, table_name=table)
+    def __init__(self, database, table, data, orm_class, test_env):
+        engine = Metadata(test_env=test_env, table_name=table)
         engine.make_engine()
         self.session = sessionmaker(bind=engine.engine)
         self.data = data
