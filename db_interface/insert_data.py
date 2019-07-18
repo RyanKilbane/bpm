@@ -1,6 +1,7 @@
 from sqlalchemy.orm import sessionmaker
 from db_interface.get_metadata import Metadata
 from sqlalchemy import exc
+from exceptions.insert_error import InsertError
 
 class InsertData:
     def __init__(self, database, table, data, orm_class):
@@ -21,4 +22,4 @@ class InsertData:
             session.commit()
             return "Data inserted"
         except Exception as error:
-            return error
+            raise InsertError(error)

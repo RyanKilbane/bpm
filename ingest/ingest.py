@@ -6,10 +6,11 @@ from db_interface.get_metadata import Metadata
 from db_interface.insert_data import InsertData
 from db_interface.construct_class import ClassBuild
 from exceptions.data_error import DataError
+from exceptions.insert_error import InsertError
 
 ingest_point = Blueprint('ingest_point', __name__)
 
-@ingest_point.route('/', methods=["POST"])
+@ingest_point.route('/ingest', methods=["POST"])
 def landing():
     table_metadata = Metadata(test_env=True, table_name="ingest", db_name="bpm_test")
     table_metadata.make_engine()
@@ -22,11 +23,14 @@ def landing():
 
     data_with_id = assign_uuid(data)
 
-    return str(persist(data_with_id, table_data)) + "\n"
+    try:
+        persist(data_with_id, table_data)
+    except InsertError as insert_error:
+        return str(insert_error) + "\n"
     
-    # post_to_next_stage(data_with_id)
+    post_to_next_stage(data_with_id)
 
-    # return "Data persisted\n"
+    return "Data persisted\n"
     
 
 def check(table_metadata, ingest_data, *ignore):
