@@ -7,6 +7,7 @@ from db_interface.insert_data import InsertData
 from db_interface.construct_class import ClassBuild
 from exceptions.data_error import DataError
 from exceptions.insert_error import InsertError
+import time
 
 ingest_point = Blueprint('ingest_point', __name__)
 
