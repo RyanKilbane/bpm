@@ -24,6 +24,3 @@ class Setup:
                         PRIMARY KEY (reference, period, survey));".format(self.table)
         cursor = self.db.cursor()
         cursor.execute(ingest_table)
-
-    def insert_test(self):
-        insert_into = """ INSERT INTO {} VALUES (12345678900, 202009, 123, None)""".format(self.table)
