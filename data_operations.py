@@ -17,11 +17,11 @@ class DataOperations:
         column_names = [column["name"] for column in self.table_metadata]
         for attribute in self.data.keys():
             if attribute not in column_names:
-                raise DataError("{} data contains too many attributes!\nExpecting: {}\nBut got: {}".format(column_names, self.data.keys()))
+                raise DataError("{} data contains too many attributes!\nExpecting: {}\nBut got: {}".format(self.stage, column_names, self.data.keys()))
         
         for col in column_names:
             if col not in self.data.keys() and col not in ignore:
-                raise DataError("{} data contains too few attributes!\nExpecting: {}\nBut got: {}".format(column_names, self.data.keys()))
+                raise DataError("{} data contains too few attributes!\nExpecting: {}\nBut got: {}".format(self.stage, column_names, self.data.keys()))
 
     def assign_uuid(self):
         self.data["bpm_id"] = str(uuid4())

@@ -1,0 +1,15 @@
+test: True
+
+ingest:
+  table_name: ingest
+  api: /ingest
+  stage: Ingest
+  database_name: bpm_test
+  ignore:
+    - bpm_id
+
+tracking:
+  table_name: tracking
+  api: /tracking
+  stage: Tracking
+  database_name: bpm_test

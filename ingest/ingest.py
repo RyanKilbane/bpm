@@ -9,24 +9,24 @@ from exceptions.data_error import DataError
 from exceptions.insert_error import InsertError
 from data_operations import DataOperations
 import time
-
+from parse_config import config
 ingest_point = Blueprint('ingest_point', __name__)
 
-@ingest_point.route('/ingest', methods=["POST"])
+@ingest_point.route(config["ingest"]["api"], methods=["POST"])
 def landing():
-    table_metadata = Metadata(test_env=True, table_name="ingest", db_name="bpm_test")
+    table_metadata = Metadata(test_env=config["test"], table_name=config["ingest"]["table_name"], db_name=config["ingest"]["database_name"])
     table_metadata.make_engine()
     table_data = table_metadata.get_table_data()
     data = request.get_json()
 
-    operations = DataOperations(table_data, data, "ingest", "Ingest", "bpm_test")
-
-    operations.assign_uuid(data)
+    operations = DataOperations(table_data, data, config["ingest"]["table_name"], config["ingest"]["stage"], config["ingest"]["database_name"])
 
     try:
-        operations.check()
+        operations.check("bpm_id")
     except DataError as data_error:
         return "OH NO! An error\n\n{}\n".format(data_error)
+
+    operations.assign_uuid()
 
     try:
         operations.persist()
