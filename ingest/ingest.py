@@ -1,7 +1,10 @@
 from flask import Blueprint, request
 import json
 from uuid import uuid4
+from sqlalchemy.ext.declarative import declarative_base
 from db_interface.get_metadata import Metadata
+from db_interface.insert_data import InsertData
+from db_interface.construct_class import ClassBuild
 from exceptions.data_error import DataError
 
 ingest_point = Blueprint('ingest_point', __name__)
@@ -18,8 +21,8 @@ def landing():
         return "OH NO! An error\n\n{}\n".format(data_error)
     
     data_with_id = assign_uuid(data)
-
-    return data_with_id
+    # return str(persist(data_with_id).__dict__)
+    return str(persist(data_with_id))
 
 def check(table_metadata, ingest_data, *ignore):
     column_names = [column["name"] for column in table_metadata]
@@ -34,4 +37,8 @@ def check(table_metadata, ingest_data, *ignore):
 def assign_uuid(ingest_data):
     ingest_data["id_info"]["bpm_id"] = str(uuid4())
     return ingest_data
-    
+
+def persist(data):
+    Base = declarative_base()
+    ingest_orm = ClassBuild("ingest", data, Base).build_class()
+    return InsertData("bpm_test", "ingest", data).insert()

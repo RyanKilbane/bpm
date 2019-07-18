@@ -17,10 +17,10 @@ class Setup:
     
     def create_ingest_table(self):
         ingest_table = "CREATE TABLE {} (\
-                        reference varchar(11),\
+                        reference varchar(11) unique,\
                         period varchar(6), \
                         survey varchar(4), \
-                        bpm_id varchar(50) \
+                        bpm_id varchar(50) unique \
                         );".format(self.table)
         cursor = self.db.cursor()
         cursor.execute(ingest_table)
