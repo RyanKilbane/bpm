@@ -14,10 +14,8 @@ class InsertData:
         try:
             orm = self.orm_class()
             print(self.data)
-            orm.reference = self.data["reference"]
-            orm.period = self.data["period"]
-            orm.survey = self.data["survey"]
-            orm.bpm_id = self.data["bpm_id"]
+            for i in self.data.keys():
+                orm.__dict__[i] = self.data[i]
             print(orm.__dict__)
             session.add(orm)
             session.commit()
