@@ -26,16 +26,16 @@ def landing():
 
 def check(table_metadata, ingest_data, *ignore):
     column_names = [column["name"] for column in table_metadata]
-    for attribute in ingest_data["id_info"].keys():
+    for attribute in ingest_data.keys():
         if attribute not in column_names:
-            raise DataError("Ingest data contains too many attributes!\nExpecting: {}\nBut got: {}".format(column_names, ingest_data["id_info"].keys()))
+            raise DataError("Ingest data contains too many attributes!\nExpecting: {}\nBut got: {}".format(column_names, ingest_data.keys()))
     
     for col in column_names:
-        if col not in ingest_data["id_info"].keys() and col not in ignore:
-            raise DataError("Ingest data contains too few attributes!\nExpecting: {}\nBut got: {}".format(column_names, ingest_data["id_info"].keys()))
+        if col not in ingest_data.keys() and col not in ignore:
+            raise DataError("Ingest data contains too few attributes!\nExpecting: {}\nBut got: {}".format(column_names, ingest_data.keys()))
 
 def assign_uuid(ingest_data):
-    ingest_data["id_info"]["bpm_id"] = str(uuid4())
+    ingest_data["bpm_id"] = str(uuid4())
     return ingest_data
 
 def persist(data):

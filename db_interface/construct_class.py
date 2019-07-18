@@ -11,7 +11,6 @@ class ClassBuild:
         return inherit_values
 
     def build_class(self):
-        self.values = {i: self.values["id_info"][i] for i in self.values["id_info"].keys()}
         self.values["__tablename__"] = self.name
         print(self.values)
         return type(self.name, self.build_inheritance(), self.values)
