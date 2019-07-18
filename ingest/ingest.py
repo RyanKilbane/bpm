@@ -19,10 +19,18 @@ def landing():
         check(table_data, data, "bpm_id")
     except DataError as data_error:
         return "OH NO! An error\n\n{}\n".format(data_error)
-    
+
     data_with_id = assign_uuid(data)
-    return str(persist(data_with_id, table_data)+"\n")
-    # return str(table_data)
+
+    try:
+         persist(data_with_id, table_data)
+    except Exception as error:
+        return str(error) + "\n"
+    
+    post_to_next_stage(data_with_id)
+
+    return "Data persisted\n"
+    
 
 def check(table_metadata, ingest_data, *ignore):
     column_names = [column["name"] for column in table_metadata]
@@ -42,3 +50,6 @@ def persist(data, column_data):
     Base = declarative_base()
     ingest_orm = ClassBuild("ingest", data, column_data, Base).build_class()
     return InsertData("bpm_test", "ingest", data, ingest_orm).insert()
+
+def post_to_next_stage(data_to_post):
+    pass

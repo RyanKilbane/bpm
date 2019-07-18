@@ -1,5 +1,6 @@
 from sqlalchemy.orm import sessionmaker
 from db_interface.get_metadata import Metadata
+from sqlalchemy import exc
 
 class InsertData:
     def __init__(self, database, table, data, orm_class):
@@ -11,12 +12,11 @@ class InsertData:
 
     def insert(self):
         session = self.session()
+        orm = self.orm_class()
+        for i in self.data.keys():
+            orm.__dict__[i] = self.data[i]
+
         try:
-            orm = self.orm_class()
-            print(self.data)
-            for i in self.data.keys():
-                orm.__dict__[i] = self.data[i]
-            print(orm.__dict__)
             session.add(orm)
             session.commit()
             return "Data inserted"
