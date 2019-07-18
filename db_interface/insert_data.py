@@ -22,4 +22,5 @@ class InsertData:
             session.commit()
             return "Data inserted"
         except Exception as error:
+            session.rollback()
             raise InsertError(error)
