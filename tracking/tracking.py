@@ -17,10 +17,12 @@ def tracking():
     table_data = table_metadata.get_table_data()
     data = request.get_json()
 
-    operations = DataOperations(table_data, data, config["tracking"]["table_name"], config["tracking"]["stage"], config["tracking"]["database_name"])
+    if check_for_no_failures(data):
+        return "No validation failures\n"
 
+    operations = DataOperations(table_data, data, config["tracking"]["table_name"], config["tracking"]["stage"], config["tracking"]["database_name"])
     try:
-        operations.check()
+        operations.check(config["tracking"]["ignore"][0])
     except DataError as data_error:
         return "OH NO! An error\n\n{}\n".format(data_error)
 
@@ -30,3 +32,8 @@ def tracking():
         return str(insert_error) + "\n"
 
     return "Data persisted\n"
+
+def check_for_no_failures(data):
+    if len(data[config["tracking"]["target"]]) == 0:
+        return True
+    return False

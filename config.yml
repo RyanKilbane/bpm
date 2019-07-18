@@ -13,3 +13,6 @@ tracking:
   api: /tracking
   stage: Tracking
   database_name: bpm_test
+  target: validation_outputs
+  ignore:
+    - validation_outputs

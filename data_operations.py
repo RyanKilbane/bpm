@@ -14,9 +14,10 @@ class DataOperations:
         self.db = db_name
         
     def check(self, *ignore):
+        print(*ignore)
         column_names = [column["name"] for column in self.table_metadata]
         for attribute in self.data.keys():
-            if attribute not in column_names:
+            if attribute not in column_names and attribute not in ignore:
                 raise DataError("{} data contains too many attributes!\nExpecting: {}\nBut got: {}".format(self.stage, column_names, self.data.keys()))
         
         for col in column_names:
