@@ -22,14 +22,11 @@ def landing():
 
     data_with_id = assign_uuid(data)
 
-    try:
-         persist(data_with_id, table_data)
-    except Exception as error:
-        return str(error) + "\n"
+    return str(persist(data_with_id, table_data)) + "\n"
     
-    post_to_next_stage(data_with_id)
+    # post_to_next_stage(data_with_id)
 
-    return "Data persisted\n"
+    # return "Data persisted\n"
     
 
 def check(table_metadata, ingest_data, *ignore):
