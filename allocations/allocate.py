@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, request, render_template
+from flask import Flask, Blueprint, request, render_template, render_template_string
 from flask_cors import cross_origin
 from db_interface.get_metadata import Metadata
 from exceptions.data_error import DataError
@@ -14,7 +14,6 @@ allocation_point = Blueprint("allocate", __name__)
 
 @allocation_point.route(config["allocations"]["api"], methods=["POST"])
 def allocate_post():
-    print(config["allocations"]["table_name"])
     allocation_table_metadata = Metadata(test_env=config["test"], table_name=config["allocations"]["table_name"], db_name=config["allocations"]["database_name"])
     allocation_table_metadata.make_engine()
     allocation_table_metadata = allocation_table_metadata.get_table_data()
@@ -35,4 +34,11 @@ def allocate_post():
 @allocation_point.route(config["allocations"]["api"], methods=["GET"])
 @cross_origin(origin="localhost", headers=["content-Type", "Authorization"])
 def allocate_get():
-    return "A GET request was recived\n"
+    allocation_table_metadata = Metadata(test_env=config["test"], table_name=config["allocations"]["table_name"], db_name=config["allocations"]["database_name"])
+    allocation_table_metadata.make_engine()
+
+    connect = allocation_table_metadata.engine.connect()
+
+    results = connect.execute("select * from allocations")
+
+    return render_template_string(str([i for i in results]))

@@ -20,8 +20,8 @@ class ClassBuild:
                 built_orm_cols[col["name"]] = Column(String, primary_key=True)
             else:
                 built_orm_cols[col["name"]] = Column(String)
+        print(built_orm_cols)
         return built_orm_cols
 
     def build_class(self):
-        print(self.values)
         return type(self.name, self.build_inheritance(), self.build_orm_cols())
