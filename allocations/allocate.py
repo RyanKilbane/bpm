@@ -16,13 +16,9 @@ allocation_point = Blueprint("allocate", __name__)
 def allocate_post():
     print(config["allocations"]["table_name"])
     allocation_table_metadata = Metadata(test_env=config["test"], table_name=config["allocations"]["table_name"], db_name=config["allocations"]["database_name"])
-    print(allocation_table_metadata)
     allocation_table_metadata.make_engine()
-    print(allocation_table_metadata)
     allocation_table_metadata = allocation_table_metadata.get_table_data()
     data = request.get_json()
-
-    print(allocation_table_metadata)
 
     allocate = {"allocated_to": "Alice", "bpm_id": data["bpm_id"], "allocation_date": time.time()}
 
