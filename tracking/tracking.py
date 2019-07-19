@@ -29,8 +29,9 @@ def tracking():
     error_table_metadata = Metadata(test_env=config["test"], table_name=config["error"]["table_name"], db_name=config["error"]["database_name"])
     error_table_metadata.make_engine()
     error_table_data = error_table_metadata.get_table_data()
+    print(error_table_data)
 
-    errors = DataOperations(error_table_data, data["bpm_id"], config["error"]["table_name"], "", config["error"]["database_name"])
+    errors = DataOperations(error_table_data, {"bpm_id": data["bpm_id"]}, config["error"]["table_name"], config["tracking"]["stage"], config["error"]["database_name"])
 
     try:
         operations.persist()

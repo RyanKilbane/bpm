@@ -18,8 +18,9 @@ tracking:
     - validation_outputs
 
 error:
-  table_name: error
-  api: /error
+  table_name: errors
+  api: /errors
+  stage: Tracking
   database_name: bpm_test
 
 allocations:

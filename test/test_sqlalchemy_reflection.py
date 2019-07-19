@@ -2,7 +2,7 @@ import pytest
 from db_setup import Setup
 from db_interface.get_metadata import Metadata
 
-db = Setup(ingest_table="ingest", tracking_table="tracking", allocation_table="allotations", error_table="errors", db_name="bpm_test")
+db = Setup(ingest_table="ingest", tracking_table="tracking", error_table="errors", allocation_table="allocations", db_name="bpm_test")
 db.create_db()
 db.create_ingest_table()
 db.create_tracking_table()

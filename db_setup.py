@@ -55,3 +55,10 @@ class Setup:
                         FOREIGN KEY (bpm_id) REFERENCES {}(bmp_id));".format(self.allocation_table, self.tracking_table)
         cursor = self.db.cursor()
         cursor.execute(allocation_table)
+
+db = Setup(ingest_table="ingest", tracking_table="tracking", error_table="errors", allocation_table="allocations", db_name="bpm_test")
+db.create_db()
+db.create_ingest_table()
+db.create_tracking_table()
+db.create_error_table()
+db.create_allocation_table()

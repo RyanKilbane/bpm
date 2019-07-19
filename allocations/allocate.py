@@ -8,12 +8,31 @@ from db_interface.insert_data import InsertData
 from exceptions.insert_error import InsertError
 from data_operations import DataOperations
 from parse_config import config
+import time
 
 allocation_point = Blueprint("allocate", __name__)
 
 @allocation_point.route(config["allocations"]["api"], methods=["POST"])
 def allocate_post():
+    print(config["allocations"]["table_name"])
+    allocation_table_metadata = Metadata(test_env=config["test"], table_name=config["allocations"]["table_name"], db_name=config["allocations"]["database_name"])
+    print(allocation_table_metadata)
+    allocation_table_metadata.make_engine()
+    print(allocation_table_metadata)
+    allocation_table_metadata = allocation_table_metadata.get_table_data()
     data = request.get_json()
+
+    print(allocation_table_metadata)
+
+    allocate = {"allocated_to": "Alice", "bpm_id": data["bpm_id"], "allocation_date": time.time()}
+
+    operations = DataOperations(allocation_table_metadata, allocate, config["allocations"]["table_name"], config["allocations"]["stage"], config["allocations"]["database_name"])
+
+    try:
+        operations.persist()
+    except InsertError as insert_error:
+        return str(insert_error)+"\n"
+
     return "recived json: {}".format(data)
 
 
