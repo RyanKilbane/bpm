@@ -17,6 +17,11 @@ tracking:
   ignore:
     - validation_outputs
 
+error:
+  table_name: error
+  api: /error
+  database_name: bpm_test
+
 allocations:
   table_name: allocations
   api: /allocate

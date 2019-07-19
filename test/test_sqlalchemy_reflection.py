@@ -2,10 +2,12 @@ import pytest
 from db_setup import Setup
 from db_interface.get_metadata import Metadata
 
-db = Setup(ingest_table="ingest", tracking_table="tracking", db_name="bpm_test")
+db = Setup(ingest_table="ingest", tracking_table="tracking", allocation_table="allotations", error_table="errors", db_name="bpm_test")
 db.create_db()
 db.create_ingest_table()
 db.create_tracking_table()
+db.create_error_table()
+db.create_allocation_table()
 
 def test_reflection():
     database = Metadata(test_env=True, table_name="ingest", db_name="bpm_test",)

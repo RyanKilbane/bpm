@@ -2,10 +2,12 @@ import sqlite3 as sl
 from db_interface.get_metadata import Metadata
 
 class Setup:
-    def __init__(self, ingest_table, tracking_table, db_name):
+    def __init__(self, ingest_table, tracking_table, error_table, allocation_table, db_name):
         self.db = None
         self.ingest_table = ingest_table
         self.tracking_table = tracking_table
+        self.error_table = error_table
+        self.allocation_table = allocation_table
         self.db_name = db_name
 
     def create_db(self):
@@ -33,6 +35,23 @@ class Setup:
                         survey varchar(4) NOT NULL, \
                         bpm_id varchar(50) UNIQUE NOT NULL, \
                         stage varchar(50) NOT NULL, \
-                        PRIMARY KEY (reference, period, survey));".format(self.tracking_table)
+                        PRIMARY KEY (bpm_id));".format(self.tracking_table)
         cursor = self.db.cursor()
         cursor.execute(tracking_table)
+
+    def create_error_table(self):
+        error_table = "CREATE TABLE {} (\
+                        bpm_id varchar(50) UNIQUE NOT NULL, \
+                        PRIMARY KEY (bpm_id));".format(self.error_table)
+        cursor = self.db.cursor()
+        cursor.execute(error_table)
+
+    def create_allocation_table(self):
+        allocation_table = "CREATE TABLE {} (\
+                        bpm_id varchar(50) UNIQUE NOT NULL, \
+                        allocated_to varchar(50) NOT NULL, \
+                        allocation_date INTEGER NOT NULL, \
+                        PRIMARY KEY (bpm_id), \
+                        FOREIGN KEY (bpm_id) REFERENCES {}(bmp_id));".format(self.allocation_table, self.tracking_table)
+        cursor = self.db.cursor()
+        cursor.execute(allocation_table)
