@@ -8,6 +8,7 @@ from db_interface.insert_data import InsertData
 from exceptions.insert_error import InsertError
 from data_operations import DataOperations
 from parse_config import config
+from allocations.assign import AllocateAssign
 import time
 
 allocation_point = Blueprint("allocate", __name__)
@@ -16,10 +17,14 @@ allocation_point = Blueprint("allocate", __name__)
 def allocate_post():
     allocation_table_metadata = Metadata(test_env=config["test"], table_name=config["allocations"]["table_name"], db_name=config["allocations"]["database_name"])
     allocation_table_metadata.make_engine()
+    connect = allocation_table_metadata.engine.connect()
     allocation_table_metadata = allocation_table_metadata.get_table_data()
     data = request.get_json()
 
-    allocate = {"allocated_to": "Alice", "bpm_id": data["bpm_id"], "allocation_date": time.time()}
+    allocate_assign = AllocateAssign(data, connect)
+    oldest = allocate_assign.get_oldest()
+    allocate = allocate_assign.assign(oldest)
+    allocate_assign.update_users(oldest)
 
     operations = DataOperations(allocation_table_metadata, allocate, config["allocations"]["table_name"], config["allocations"]["stage"], config["allocations"]["database_name"])
 
@@ -39,6 +44,10 @@ def allocate_get():
 
     connect = allocation_table_metadata.engine.connect()
 
-    results = connect.execute("select * from allocations")
+    results = connect.execute("select * from {}".format(config["allocations"]["table_name"]))
 
     return render_template_string(str([i for i in results]))
+
+@allocation_point.route(config["allocations"]["api"], methods=["PUT"])
+def allocate_update():
+    pass

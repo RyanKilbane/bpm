@@ -28,3 +28,9 @@ allocations:
   api: /allocate
   stage: Allocation
   database_name: bpm_test
+
+users:
+  table_name: users
+  api: /users
+  stage: Allocation
+  database_name: bpm_test

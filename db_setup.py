@@ -1,13 +1,15 @@
 import sqlite3 as sl
+import time
 from db_interface.get_metadata import Metadata
 
 class Setup:
-    def __init__(self, ingest_table, tracking_table, error_table, allocation_table, db_name):
+    def __init__(self, ingest_table, tracking_table, error_table, allocation_table, user_table, db_name):
         self.db = None
         self.ingest_table = ingest_table
         self.tracking_table = tracking_table
         self.error_table = error_table
         self.allocation_table = allocation_table
+        self.user_table = user_table
         self.db_name = db_name
 
     def create_db(self):
@@ -56,9 +58,29 @@ class Setup:
         cursor = self.db.cursor()
         cursor.execute(allocation_table)
 
-db = Setup(ingest_table="ingest", tracking_table="tracking", error_table="errors", allocation_table="allocations", db_name="bpm_test")
+    def create_user_table(self):
+        user_table = "CREATE TABLE {} (\
+                      user VARCHAR(6) UNIQUE NOT NULL,\
+                      last_assigned INTEGER,\
+                      PRIMARY KEY (user));".format(self.user_table)
+        cursor = self.db.cursor()
+        cursor.execute(user_table)
+
+    def populate_users(self):
+        insert_users = "INSERT INTO {} VALUES ('alice', {})".format(self.user_table, time.time())
+        cursor = self.db.cursor()
+        cursor.execute(insert_users)
+        self.db.commit()
+        insert_users = "INSERT INTO {} VALUES ('bob', {})".format(self.user_table, time.time())
+        cursor = self.db.cursor()
+        cursor.execute(insert_users)
+        self.db.commit()
+
+db = Setup(ingest_table="ingest", tracking_table="tracking", error_table="errors", allocation_table="allocations", user_table="users", db_name="bpm_test")
 db.create_db()
 db.create_ingest_table()
 db.create_tracking_table()
 db.create_error_table()
 db.create_allocation_table()
+db.create_user_table()
+db.populate_users()
