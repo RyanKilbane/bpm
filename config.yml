@@ -1,4 +1,5 @@
 test: True
+cr_redirect: aURL
 
 ingest:
   table_name: ingest

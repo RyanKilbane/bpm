@@ -45,7 +45,7 @@ def tracking():
     
     operations.post_to_next_stage("http://127.0.0.1:5000/allocate")
 
-    return ('OK', 200)
+    return ('OK\n', 200)
 
 
 @tracking_point.route(config["tracking"]["api"], methods=["PUT"])

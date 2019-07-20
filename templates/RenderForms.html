@@ -1,0 +1,10 @@
+{% macro render_field(field="") %}
+  {{ field(placeholder=field.label.text.capitalize(), class="input input--text input-type__input sbr-search-input input-grey-color" ) }}
+  {% if field.errors %}
+    <ul class=errors>
+    {% for error in field.errors %}
+      <li>{{ error }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}

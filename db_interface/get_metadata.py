@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.engine import reflection
 from sqlalchemy.orm import Session
+from parse_config import config
 
 class Metadata:
     def __init__(self, test_env=False, table_name=None, db_name=None):

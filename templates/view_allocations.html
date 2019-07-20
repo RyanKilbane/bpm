@@ -1,0 +1,87 @@
+{% extends "./base.html" %}
+
+{% block title %}Allocations{% endblock title %}
+
+
+
+{% block page_header %}
+	<h1 class="jupiter main_heading">Search</h1>
+{% endblock page_header %}
+
+
+{% block content %}
+
+
+		<div>
+			<div class="wrapper">
+
+				<div class="group">
+					<div class="col-12">
+						<div style="overflow:auto;">
+						<table id="ResultsTable" class="table table__dense">
+							<thead class="table--head caps-first-letter">
+							<th></th> 
+							<!--Blank column for view form button-->
+							<!--Render each column name -->
+							{% for column in header %}
+								<th class="table--header--cell"> {{ column }}
+							{% endfor %}
+							</thead>
+							<tbody>
+								<!-- for each record, render each data value -->
+								{% for record in records %}
+
+								<tr class="table--row">
+									<td><a  target="_blank">
+										<a href="{{ cr_redirect }}">
+                                        <input class="btn btn--small" name="formButton" value="View Form" type="submit"></a></td>
+									<!-- Use .values() method to get values from each row dict -->
+									{% for element in record.values() %}
+									<td class="table--cell">{{ element }}</td>
+									{% endfor %}
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+			</div>
+			<h1>{{ message }}</h1>
+		</div>
+	</section>
+
+	<br>
+
+	<div class="button-container">
+		{% if first_url %}
+    <form method="post"><button class="btn btn--small" name="firstButton" value="{{ first_url }}" id="first" type="submit">First</button></form>
+    {% endif %}
+    {% if prev_url %}
+		<form method="post"><button class="btn btn--small" name="prevButton" value="{{ prev_url }}" id="prev" type="submit"> << </button></form>
+    {% endif %}
+	{% if next_url %}
+		<form method="post"><button class="btn btn--small" name="nextButton" value="{{ next_url }}" id="next" type="submit"> >> </button></form>
+	{% endif %}
+	{% if last_url %}
+		<form method="post"><button class="btn btn--small" name="lastButton" value="{{ last_url }}" id="last" type="submit">Last</button></form>
+	{% endif %}
+	</div>
+
+    <br>
+	<br>
+
+	<br>
+	<br>
+	<br>
+	<br>
+
+
+<script>
+    var rows = document.getElementById("ResultsTable");
+    if(rows.length === 0){
+        document.getElementById("hide_panel").style.display = "none";
+       }
+</script>
+
+{% endblock content %}

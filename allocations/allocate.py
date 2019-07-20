@@ -45,9 +45,16 @@ def allocate_get():
     connect = allocation_table_metadata.engine.connect()
 
     results = connect.execute("select * from {}".format(config["allocations"]["table_name"]))
+    users = connect.execute("SELECT * FROM {}".format(config["users"]["table_name"]))
+    headers=["ID", "Assigned to", "Assigned on"]
 
-    return render_template_string(str([i for i in results]))
+    records = build_json(headers, results)
+
+    return render_template("./view_allocations.html", header=headers, records=records, users=users, cr_url=config["cr_redirect"])
 
 @allocation_point.route(config["allocations"]["api"], methods=["PUT"])
 def allocate_update():
     pass
+
+def build_json(headers, records):
+    return [dict(zip(headers, i)) for i in list(records)]
