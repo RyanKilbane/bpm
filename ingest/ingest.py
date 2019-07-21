@@ -23,7 +23,7 @@ def landing():
     try:
         operations.check(config["ingest"]["ignore"][0])
     except DataError as data_error:
-        return "OH NO! An error\n\n{}\n".format(data_error)
+        return ("OH NO! An error\n\n{}\n".format(data_error), 500)
 
     operations.assign_uuid()
 
