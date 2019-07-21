@@ -1,0 +1,86 @@
+{% extends "./base.html" %}
+
+{% block title %}Users{% endblock title %}
+
+
+
+{% block page_header %}
+	<h1 class="jupiter main_heading">Search</h1>
+{% endblock page_header %}
+
+
+{% block content %}
+
+<div>
+    <div class="wrapper">
+
+        <div class="group">
+            <div class="col-12">
+                <div style="overflow:auto;">
+                <form method="POST">
+                <table id="ResultsTable" class="table table__dense">
+                    <thead class="table--head caps-first-letter">
+                    {% for column in headers %}
+                        <th class="table--header--cell"> {{ column }}
+                    {% endfor %}
+                    </thead>
+                    <tbody>
+                        <!-- for each record, render each data value -->
+                        {% for record in records %}
+                            {% for key in headers %}
+                                {% if key == "should_allocate" %}
+                                    {% if record["should_allocate"] == 'Y'%}
+                                    <td class="table--cell"><input type=checkbox value="record['user']"checked></td>
+                                    {% endif %}
+                                    {% if record["should_allocate"] == 'N'%}
+                                    <td class="table--cell"><input type=checkbox value="record['user']"></td>
+                                    {% endif %}
+                                    {% endif %}
+                                    {% if key != "should_allocate" %}
+                                <td class="table--cell">{{ record[key] }}</td>
+                                    {% endif %}
+                                {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button class="btn" type="submit" id="saveFormButton" value="saveForm" name="action">Save</button>
+            </form>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+	<div class="button-container">
+		{% if first_url %}
+    <form method="post"><button class="btn btn--small" name="firstButton" value="{{ first_url }}" id="first" type="submit">First</button></form>
+    {% endif %}
+    {% if prev_url %}
+		<form method="post"><button class="btn btn--small" name="prevButton" value="{{ prev_url }}" id="prev" type="submit"> << </button></form>
+    {% endif %}
+	{% if next_url %}
+		<form method="post"><button class="btn btn--small" name="nextButton" value="{{ next_url }}" id="next" type="submit"> >> </button></form>
+	{% endif %}
+	{% if last_url %}
+		<form method="post"><button class="btn btn--small" name="lastButton" value="{{ last_url }}" id="last" type="submit">Last</button></form>
+	{% endif %}
+	</div>
+
+    <br>
+	<br>
+
+	<br>
+	<br>
+	<br>
+	<br>
+
+
+<script>
+    var rows = document.getElementById("ResultsTable");
+    if(rows.length === 0){
+        document.getElementById("hide_panel").style.display = "none";
+       }
+</script>
+
+{% endblock content %}

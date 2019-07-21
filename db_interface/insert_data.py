@@ -18,7 +18,7 @@ class InsertData:
             orm.__dict__[i] = self.data[i]
 
         try:
-            print("Insert ORM: {}".format(orm))
+            print("Insert ORM: {}".format(type(orm)))
             session.add(orm)
             session.commit()
             return "Data inserted"

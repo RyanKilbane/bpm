@@ -12,5 +12,5 @@ class GetData:
 
     def select(self):
         session = self.session()
-        orm = self.orm_class()
+        orm = self.orm_class
         return session.query(orm)
