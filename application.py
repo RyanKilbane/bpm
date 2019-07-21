@@ -7,7 +7,7 @@ from dashboard.dashboard import dashboard_point
 from metrics.metrics import metric_point
 from users.users import user_point
 
-app = Flask(__name__, template_folder="templates")
+app = Flask(__name__, template_folder="templates", static_folder="static")
 app.register_blueprint(ingest_point)
 app.register_blueprint(tracking_point)
 app.register_blueprint(allocation_point)
