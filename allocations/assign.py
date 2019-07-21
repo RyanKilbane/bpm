@@ -7,7 +7,7 @@ class AllocateAssign:
         self.engine = db_engine
     
     def get_oldest(self):
-        users = self.engine.execute("SELECT user from {} ORDER BY last_assigned ASC".format(config["users"]["table_name"]))
+        users = self.engine.execute("SELECT user from {} WHERE should_allocate = Y ORDER BY last_assigned ASC".format(config["users"]["table_name"]))
         return list(users)[0]
 
     def assign(self, user_info):

@@ -62,16 +62,21 @@ class Setup:
         user_table = "CREATE TABLE {} (\
                       user VARCHAR(6) UNIQUE NOT NULL,\
                       last_assigned INTEGER,\
+                      should_allocate CHAR(1),\
                       PRIMARY KEY (user));".format(self.user_table)
         cursor = self.db.cursor()
         cursor.execute(user_table)
 
     def populate_users(self):
-        insert_users = "INSERT INTO {} VALUES ('alice', {})".format(self.user_table, time.time())
+        insert_users = "INSERT INTO {} VALUES ('alice', {}, 'Y')".format(self.user_table, time.time())
         cursor = self.db.cursor()
         cursor.execute(insert_users)
         self.db.commit()
-        insert_users = "INSERT INTO {} VALUES ('bob', {})".format(self.user_table, time.time())
+        insert_users = "INSERT INTO {} VALUES ('bob', {}, 'Y')".format(self.user_table, time.time())
+        cursor = self.db.cursor()
+        cursor.execute(insert_users)
+        self.db.commit()
+        insert_users = "INSERT INTO {} VALUES ('eve', {}, 'N')".format(self.user_table, time.time())
         cursor = self.db.cursor()
         cursor.execute(insert_users)
         self.db.commit()

@@ -32,4 +32,6 @@ def landing():
     except InsertError as insert_error:
         return str(insert_error) + "\n"
 
-    return "Data persisted\n"
+    # TODO: Add POST to data prep stage
+
+    return ("Data persisted\n", 200)

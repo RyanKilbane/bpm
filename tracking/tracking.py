@@ -71,7 +71,7 @@ def tracking_update():
     
     operations.post_to_next_stage("http://127.0.0.1:5000/allocate")
 
-    return ('OK', 200)
+    return ('OK\n', 200)
 
 def check_for_no_failures(data):
     if len(data[config["tracking"]["target"]]) == 0:
