@@ -54,7 +54,20 @@ def allocate_get():
 
 @allocation_point.route(config["allocations"]["api"], methods=["PUT"])
 def allocate_update():
-    pass
+    allocation_table_metadata = Metadata(test_env=config["test"], table_name=config["allocations"]["table_name"], db_name=config["allocations"]["database_name"])
+    allocation_table_metadata.make_engine()
+
+    connect = allocation_table_metadata.engine.connect()
+
+    data = request.get_json()
+
+    try:
+        connect.execute("UPDATE {} SET allocated_to = '{}' where bpm_id = '{}'".format(config["allocations"]["table_name"], data["assigned"], data["bpm_id"]))
+        return ("Updated\n", 200)
+    except Exception as error:
+        return (str(error) + "\n", 500)
+
+
 
 def build_json(headers, records):
     return [dict(zip(headers, i)) for i in list(records)]

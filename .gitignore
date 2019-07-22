@@ -115,3 +115,6 @@ node_modules/
 # sqlite bpm_test
 bpm_test
 :memory
+
+# bokeh figures
+image.html

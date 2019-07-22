@@ -2,7 +2,7 @@ from exceptions.data_error import DataError
 from sqlalchemy.ext.declarative import declarative_base
 from db_interface.construct_class import ClassBuild
 from db_interface.insert_data import InsertData
-from db_interface.get_data import GetData
+from db_interface.get_data import QueryData
 from exceptions.insert_error import InsertError
 from uuid import uuid4
 import requests
@@ -38,7 +38,13 @@ class DataOperations:
     def select(self):
         Base = declarative_base()
         orm = ClassBuild(self.table_name, {}, self.table_metadata, Base).build_class()
-        return GetData(self.db, self.table_name, orm, config["test"]).select()
+        return QueryData(self.db, self.table_name, orm, config["test"]).select()
+
+    def update(self, filter_attribute, filter_value, value_to_update, updated_value, update_data):
+        Base = declarative_base()
+        orm = ClassBuild(self.table_name, self.data, self.table_metadata, Base).build_class()
+        return QueryData(self.db, self.table_name, orm, config["test"]).update(filter_attribute, filter_value, value_to_update, updated_value, update_data)
+        
 
     def post_to_next_stage(self, api):
         print("data to post: {}".format(self.data))

@@ -54,7 +54,8 @@ class Setup:
                         allocated_to varchar(50) NOT NULL, \
                         allocation_date INTEGER NOT NULL, \
                         PRIMARY KEY (bpm_id), \
-                        FOREIGN KEY (bpm_id) REFERENCES {}(bmp_id));".format(self.allocation_table, self.tracking_table)
+                        FOREIGN KEY (bpm_id) REFERENCES {}(bmp_id)\
+                        FOREIGN KEY (allocated_to) REFERENCES {}(user));".format(self.allocation_table, self.tracking_table, self.user_table)
         cursor = self.db.cursor()
         cursor.execute(allocation_table)
 
