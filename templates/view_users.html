@@ -30,10 +30,10 @@
                             {% for key in headers %}
                                 {% if key == "should_allocate" %}
                                     {% if record["should_allocate"] == 'Y'%}
-                                    <td class="table--cell"><input type=checkbox value="record['user']"checked></td>
+                                    <td class="table--cell"><input type=checkbox id="{{ record['user'] }}_allocate_status" value="{{ record['user'] }}" onchange="changeStatus(this)" checked></td>
                                     {% endif %}
                                     {% if record["should_allocate"] == 'N'%}
-                                    <td class="table--cell"><input type=checkbox value="record['user']"></td>
+                                    <td class="table--cell"><input type=checkbox id="{{ record['user'] }}_allocate_status" value="{{ record['user'] }}" onchange="changeStatus(this)"></td>
                                     {% endif %}
                                     {% endif %}
                                     {% if key != "should_allocate" %}
@@ -83,4 +83,12 @@
        }
 </script>
 
+<script>
+    function changeStatus(element){
+        var id = $(element);
+        alert(id)
+    }
+</script>
+
 {% endblock content %}
+
